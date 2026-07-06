@@ -1,0 +1,38 @@
+﻿<dx:ThemedWindow
+    x:Class="MoreTokensApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:local="clr-namespace:MoreTokensApp"
+    Title="MainWindow" Height="600" Width="800">
+    <Grid>
+        <dxlc:LayoutControl  Orientation="Vertical">
+            <dxlc:LayoutGroup View="GroupBox" Header="Personal Information">
+                <dxlc:LayoutItem Label="First Name:">
+                    <dxe:TextEdit EditValue="{Binding CurrentEmployee.FirstName}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Last Name:">
+                    <dxe:TextEdit EditValue="{Binding CurrentEmployee.LastName}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup View="GroupBox" Header="Additional">
+                <dxlc:LayoutItem Label="Current Position">
+                    <dxe:TextEdit EditValue="{Binding CurrentEmployee.Position}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Roles:" LabelVerticalAlignment="Top">
+                    <dxe:ComboBoxEdit ItemsSource="{Binding AvailableRoles}"
+                                      EditValue="{Binding CurrentEmployee.RoleIds}"
+                                      DisplayMember="Name" ValueMember="Id">
+                        <dxmvvm:Interaction.Behaviors>
+                            <local:ShowMoreBehavior CollapsedHeight="22"/>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxe:ComboBoxEdit>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutControl>
+                
+    </Grid>
+</dx:ThemedWindow>
