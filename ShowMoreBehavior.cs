@@ -32,8 +32,8 @@ namespace MoreTokensApp {
          DependencyProperty.Register(nameof(IsExpanded), typeof(bool), typeof(ShowMoreBehavior), new PropertyMetadata(false, OnIsExpandedChanged));
 
         protected static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var behavior = d as ShowMoreBehavior;
-            if (behavior?.ComboBoxEdit != null)
+            ShowMoreBehavior behavior = d as ShowMoreBehavior;
+            if(behavior?.ComboBoxEdit != null)
                 behavior.ComboBoxEdit.MaxHeight = (bool)e.NewValue ? double.PositiveInfinity : behavior.CollapsedHeight;
         }
 
@@ -84,11 +84,11 @@ namespace MoreTokensApp {
 
         protected void ComboBoxEdit_Loaded(object sender, RoutedEventArgs e) {
             ComboBoxEdit.Loaded -= ComboBoxEdit_Loaded;
-            var tokenEditor = LayoutTreeHelper.GetVisualChildren(ComboBoxEdit).OfType<TokenEditor>().FirstOrDefault();
-            if (tokenEditor != null)
+            TokenEditor tokenEditor = LayoutTreeHelper.GetVisualChildren(ComboBoxEdit).OfType<TokenEditor>().FirstOrDefault();
+            if(tokenEditor != null)
                 ScrollViewer.SetVerticalScrollBarVisibility(tokenEditor, ScrollBarVisibility.Hidden);
-            var scrollViewer = LayoutTreeHelper.GetVisualChildren(ComboBoxEdit).OfType<ScrollViewer>().FirstOrDefault();
-            if (scrollViewer != null)
+            ScrollViewer scrollViewer = LayoutTreeHelper.GetVisualChildren(ComboBoxEdit).OfType<ScrollViewer>().FirstOrDefault();
+            if(scrollViewer != null)
                 BindingOperations.SetBinding(this, ScrollableHeightProperty, new Binding("ScrollableHeight") { Source = scrollViewer });
         }
 
@@ -129,15 +129,11 @@ namespace MoreTokensApp {
         }
 
         protected void UpdateShowMoreButtonText() {
-            if (IsExpanded) {
-                ShowMoreButtonText = "Show Less";
-            } else {
-                ShowMoreButtonText = $"Show More";
-            }
+            ShowMoreButtonText = IsExpanded ? "Show Less" : "Show More";
         }
 
         protected void UpdateShowMoreButtonVisibility() {
-            if (IsExpanded && ComboBoxEdit.ActualHeight / CollapsedHeight <= 1) {
+            if(IsExpanded && ComboBoxEdit.ActualHeight / CollapsedHeight <= 1) {
                 IsExpanded = false;
             }
             ShowMoreButtonVisible = ScrollableHeight > 0 || IsExpanded;
