@@ -7,7 +7,7 @@
 
 # WPF ComboBoxEdit — Add a "Show More" Button to Expand/Collapse Selected Tokens
 
-This example attaches a reusable behavior to a [ComboBoxEdit](https://docs.devexpress.com/WPF/DevExpress.Xpf.Editors.ComboBoxEdit) that displays selected items as tokens. When the number of selected tokens exceeds an editor's height, the behavior adds **Show More**/**Show Less** buttons that expand/collapse the editor.
+This example attaches a reusable behavior to a [ComboBoxEdit](https://docs.devexpress.com/WPF/DevExpress.Xpf.Editors.ComboBoxEdit) that displays selected items as tokens. When the selected tokens do not fit within the editor's collapsed height, the behavior adds a single **Show More** / **Show Less** toggle button that expands and collapses the editor.
 
 ![WPF ComboBoxEdit with a Show More button, DevExpress](Images/show-more-button.png)
 
@@ -31,10 +31,10 @@ The behavior is self-contained and MVVM-friendly. You can attach it to any token
 
 The core logic is stored in [ShowMoreBehavior.cs](./ShowMoreBehavior.cs), a `Behavior<ComboBoxEdit>`:
 
-- **Token style** — applies `CheckedTokenComboBoxStyleSettings` with `EnableTokenWrapping = true` so tokens wrap to multiple lines.
-- **Collapse/Expand** — the `IsExpanded` dependency property switches `ComboBoxEdit.MaxHeight` between `CollapsedHeight` and `double.PositiveInfinity`.
-- **Toggle button** — a custom [ButtonInfo](https://docs.devexpress.com/WPF/DevExpress.Xpf.Editors.ButtonInfo) (a `Toggle` button) is added to `ComboBoxEdit.Buttons`. Its caption is bound to `ShowMoreButtonText` ("Show More" / "Show Less") and its visibility to `ShowMoreButtonVisible`.
-- **Button visibility** — the behavior binds to the inner `ScrollViewer.ScrollableHeight` and displays the button only when the tokens overflow the collapsed height (or while expanded).
+- **Token style** — applies `CheckedTokenComboBoxStyleSettings` with `EnableTokenWrapping = true` so selected values render as tokens that wrap to multiple lines.
+- **Show More / Show Less button** — a single toggle [ButtonInfo](https://docs.devexpress.com/WPF/DevExpress.Xpf.Editors.ButtonInfo) is added to `ComboBoxEdit.Buttons`. Clicking it runs `ToggleExpandCollapseCommand`, which flips the `IsExpanded` property. The caption is bound to `ShowMoreButtonText` and updates to "Show More" or "Show Less" to reflect the current state.
+- **Collapse/Expand** — the `IsExpanded` property switches `ComboBoxEdit.MaxHeight` between `CollapsedHeight` (default `22`) and `double.PositiveInfinity`, so the editor grows to reveal all tokens and shrinks back.
+- **Button visibility** — the behavior binds to the inner `ScrollViewer.ScrollableHeight` and displays the button only when the tokens overflow the collapsed height (`ScrollableHeight > 0`) or while the editor is expanded.
 
 ### Files to Review
 
